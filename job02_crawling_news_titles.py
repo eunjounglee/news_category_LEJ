@@ -10,11 +10,11 @@ category = ['Politics', 'Economics', 'Social', 'Culture', 'World', 'IT']
 
 options = ChromeOptions()
 options.add_argument('lang=ko_KR')
-#options.add_argument('headless')
+options.add_argument('headless')
 
 service = ChromeService(executable_path=ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
-my_section = 3 # 0: politics  1: Economics, 2: Social, 3: Social, 4: culture, 5: IT
+my_section = 2 # 0: politics  1: Economics, 2: Social, 3: Culture, 4: World, 5: IT
 
 url = 'https://news.naver.com/section/10{}'.format(my_section)
 driver.get(url)
@@ -34,11 +34,11 @@ while True:
 time.sleep(1)
 
 #class 로 찾기
-title_tags = driver.find_element(By.CLASS_NAME, 'sa_text_strong')
+title_tags = driver.find_elements(By.CLASS_NAME, 'sa_text_strong')
 
 titles = []
-for title in title_tags:
-    titles.append(title.text)
+for title_tag in title_tags:
+    titles.append(title_tag.text)
 df_titles = pd.DataFrame(titles, columns=['title'])
 df_titles['category'] = category[my_section]
 
